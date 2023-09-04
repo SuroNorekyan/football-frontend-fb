@@ -31,7 +31,7 @@ export const Carousel = () => {
         className="relative w-full"
         data-carousel="slide"
       >
-        <div className="relative overflow-hidden rounded-lg lg:h-[500px] h-[300px]">
+        <div className="relative overflow-hidden rounded-lg lg:h-[500px] h-[250px]">
           {carouselPosts.map((post, index) => (
             <div
               key={index}
@@ -54,7 +54,7 @@ export const Carousel = () => {
 
         <div className="flex flex-col w-full absolute z-30 space-x-3 -translate-x-1/2 bottom-7 left-1/2 bg-[#0f000036]">
           <div className="flex flex-col items-center w-full my-4 ">
-            <h2 className="text-white text-5xl font-semibold">
+            <h2 className="text-white text-2xl lg:text-5xl font-semibold">
               {carouselPosts[activeIndex]?.title}
             </h2>
             <div className="flex w-11/12 text-white lg:text-lg text-sm justify-center text-center">
@@ -72,7 +72,7 @@ export const Carousel = () => {
                 <button
                   type="button"
                   className={`w-3 h-3 rounded-full ${
-                    index === activeIndex ? "bg-blue-500" : "bg-gray-300"
+                    index === activeIndex ? "bg-blue-500" : "bg-[#ffffff8f]"
                   }`}
                   aria-current={index === activeIndex ? "true" : "false"}
                   aria-label={`Slide ${index + 1}`}

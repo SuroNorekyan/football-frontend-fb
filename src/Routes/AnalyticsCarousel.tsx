@@ -16,7 +16,7 @@ export const AnalyticsCarousel = () => {
   const navigate = useNavigate();
   return (
     <div className="w-full flex ">
-      <div className="lg:flex hidden items-center justify-center w-full h-full py-24 sm:py-8 px-4">
+      <div className="lg:flex hidden items-center justify-center w-full h-full py-24 px-4">
         {/* Carousel for desktop and large size devices */}
         <CarouselProvider
           className="flex"
@@ -126,7 +126,7 @@ export const AnalyticsCarousel = () => {
           </div>
         </CarouselProvider>
       </div>
-      <div className="lg:hidden flex items-center justify-center w-full h-full py-24 sm:py-8 px-4">
+      <div className="lg:hidden flex items-center justify-center w-full h-full py-10 px-4">
         {/* Carousel for desktop and large size devices */}
         <CarouselProvider
           className="flex"

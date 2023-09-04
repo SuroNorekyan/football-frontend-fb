@@ -5,12 +5,13 @@ import { useAuth } from "../Context/AuthContext";
 import APIService from "../APIService/APIService";
 import HelperService from "../AdditionalHelperMethods/HelperService";
 import { BiSolidTimeFive } from "react-icons/bi";
+import { BsArrowUpRightCircle, BsArrowUpRightCircleFill } from "react-icons/bs";
 
 export const Feed = () => {
   const { feedPost } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const postsPerPage = 4;
+  const postsPerPage = 10;
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -66,12 +67,13 @@ export const Feed = () => {
       ))}
       <div className="w-full flex flex-col items-center lg:my-4">
         <button
-          className="flex w-full justify-center my-4"
+          className="flex w-full justify-center items-center my-4 text-2xl py-2 "
           onClick={() => {
             navigate("/posts");
           }}
         >
-          See more
+          <p className="px-2">Տեսնել ավելին</p>
+          <BsArrowUpRightCircle />
         </button>
 
         <Pagination

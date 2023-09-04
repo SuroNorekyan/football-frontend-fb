@@ -11,13 +11,13 @@ const Footer: React.FC = () => {
     <div className="w-full flex flex-col items-center lg:flex-row justify-center bg-[#1E293B]">
       <div className="w-11/12 flex flex-col items-center lg:flex-row py-8 text-white">
         <div className="lg:w-1/3 w-full flex flex-col justify-center px-8 lg:py-0 py-8">
-          <p className="text-8xl font-extrabold">LOGO</p>
-          <p className="text-2xl font-bold">Football News</p>
+          <p className="lg:text-8xl text-7xl font-extrabold">ONSIDE</p>
+          <p className="text-2xl font-bold">Փուտբոլային Նորություններ</p>
         </div>
         <div className="lg:w-1/3 w-full flex flex-col  justify-center px-8 lg:py-0 py-8">
           {/*<p className="text-8xl font-extrabold">LOGO</p>*/}
           <p className="text-md font-normal">
-            "© 2023 [Your Website Name]. All rights reserved. The content,
+            "© 2023 ONSIDE.AM . Բոլոր իրավունքները պաշտպանված են. The content,
             images, and information on this website are protected by copyright
             law. Any unauthorized use or reproduction of the materials on this
             site is prohibited without written permission."

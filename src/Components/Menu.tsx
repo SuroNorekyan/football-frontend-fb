@@ -29,13 +29,13 @@ export const Menu = () => {
 
   return (
     <div className="w-full flex flex-row justify-center bg-[#1E293B] items-center ">
-      <div className="w-11/12 flex p-8">
-        <div className="lg:w-1/3 w-1/2 flex justify-center items-center">
+      <div className="lg:w-11/12 w-full flex p-6">
+        <div className="lg:w-1/3 w-1/2 flex flex-col justify-center items-center">
           <button
-            className="w-full flex justify-start lg:text-2xl text-lg font-bold text-white cursor-pointer"
+            className="w-full flex justify-start lg:text-2xl text-2xl font-bold text-white cursor-pointer"
             onClick={() => navigate("/")}
           >
-            Football News
+            ONSIDE.AM
           </button>
         </div>
         <div className="w-1/3 lg:flex hidden justify-center">
@@ -66,12 +66,14 @@ export const Menu = () => {
                   selected={selectedDate}
                   onChange={handleDateChange}
                   dateFormat="yyyy-MM-dd"
-                  className="z-50  pl-4 pr-3 py-2 text-sm rounded-lg border border-gray-300 focus:ring focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                  className="z-50  pl-4 pr-3 py-2 text-sm rounded-lg  focus:ring focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
                   placeholderText="Select a date"
                   customInput={
                     <div className="flex items-center">
-                      <FaCalendarAlt className="mr-2" />
-                      Select a date
+                      <FaCalendarAlt className="mr-2 lg:text-xl text-5xl " />
+                      <p className="flex text-start text-white text-sm">
+                        Ընտրել Ամսաթիվ
+                      </p>
                     </div>
                   }
                 />

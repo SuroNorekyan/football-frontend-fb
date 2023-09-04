@@ -7,6 +7,8 @@ import { FeaturedNews } from "../Components/FeaturedNews";
 import Footer from "../Components/Footer";
 import HelperService from "../AdditionalHelperMethods/HelperService";
 import { BiSolidTimeFive } from "react-icons/bi";
+import { BsArrowUpRightCircle } from "react-icons/bs";
+import { Feed } from "../Components/Feed";
 
 interface PostDetailsProps {
   posts: Post[];
@@ -65,16 +67,25 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts }) => {
             </div>
           </div>
           <div className="hidden lg:w-2/5 w-full px-2 lg:my-0 lg:flex flex-col">
-            <SideFeed postsPerPage={7} />
-            <button className="flex w-full justify-center">See more</button>
+            <SideFeed postsPerPage={10} />
+            <button className="flex w-full justify-center">
+              <p className="px-2">Տեսնել ավելին</p>
+              <BsArrowUpRightCircle />
+            </button>
             <div className="flex w-full justify-center ">
               <div className="w-full flex h-44 border-2 border-black rounded-xl"></div>
             </div>
           </div>
 
+          <div className="w-full flex ">
+            {" "}
+            <div className="flex lg:w-full w-full px-2 lg:my-4 justify-start ">
+              <Feed />
+            </div>
+          </div>
           <div className="w-full my-16 ">
             <div className="w-full justify-center flex text-2xl font-bold">
-              Featured News
+              Թոփ Նորություններ
             </div>
             <div className="w-full flex flex-col my-8">
               <FeaturedNews />
