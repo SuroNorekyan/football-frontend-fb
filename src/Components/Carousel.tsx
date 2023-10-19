@@ -3,20 +3,28 @@ import { useAuth } from "../Context/AuthContext";
 import APIService from "../APIService/APIService";
 import HelperService from "../AdditionalHelperMethods/HelperService";
 import { useNavigate } from "react-router-dom";
+import { Post } from "../models/models";
 
 export const Carousel = () => {
   const { carouselPosts } = useAuth();
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
+  const reversedCarouselPosts = [];
+  for (let i = carouselPosts.length - 1; i >= carouselPosts.length - 5; i--) {
+    reversedCarouselPosts.push(carouselPosts[i]);
+  }
 
   const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % carouselPosts.length);
+    setActiveIndex(
+      (prevIndex) => (prevIndex + 1) % reversedCarouselPosts.length,
+    );
   };
 
   const handlePrev = () => {
     setActiveIndex(
       (prevIndex) =>
-        (prevIndex - 1 + carouselPosts.length) % carouselPosts.length,
+        (prevIndex - 1 + reversedCarouselPosts.length) %
+        reversedCarouselPosts.length,
     );
   };
 
@@ -32,7 +40,7 @@ export const Carousel = () => {
         data-carousel="slide"
       >
         <div className="relative overflow-hidden rounded-lg lg:h-[500px] h-[250px]">
-          {carouselPosts.map((post, index) => (
+          {reversedCarouselPosts.map((post, index) => (
             <div
               key={index}
               className={`${
@@ -41,7 +49,7 @@ export const Carousel = () => {
               data-carousel-item=""
             >
               <img
-                src={post.img}
+                src={post?.img}
                 className="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 rounded-xl cursor-pointer "
                 alt={`Image ${index + 1}`}
                 onClick={() => {
@@ -54,20 +62,20 @@ export const Carousel = () => {
 
         <div className="flex flex-col w-full absolute z-30 space-x-3 -translate-x-1/2 bottom-7 left-1/2 bg-[#0f000036]">
           <div className="flex flex-col items-center w-full my-4 ">
-            <h2 className="text-white text-2xl lg:text-5xl font-semibold">
-              {carouselPosts[activeIndex]?.title}
+            <h2 className="flex flex-row justify-center items-center text-white text-sm lg:text-5xl font-semibold">
+              {reversedCarouselPosts[activeIndex]?.title}
             </h2>
-            <div className="flex w-11/12 text-white lg:text-lg text-sm justify-center text-center">
-              {carouselPosts[activeIndex]
-                ? HelperService.truncateTitle(
-                    carouselPosts[activeIndex]?.description,
-                    15,
-                  )
-                : null}
-            </div>
+            {/*<div className="flex w-11/12 text-white lg:text-lg text-xs justify-center text-center">*/}
+            {/*  {reversedCarouselPosts[activeIndex]*/}
+            {/*    ? HelperService.truncateTitle(*/}
+            {/*        reversedCarouselPosts[activeIndex]?.description,*/}
+            {/*        15,*/}
+            {/*      )*/}
+            {/*    : null}*/}
+            {/*</div>*/}
           </div>
           <div className="flex flex-row justify-center">
-            {carouselPosts.map((_, index) => (
+            {reversedCarouselPosts.map((_, index) => (
               <div className="mx-1" key={index}>
                 <button
                   type="button"

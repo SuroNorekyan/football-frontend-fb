@@ -14,6 +14,10 @@ import { Link, useNavigate } from "react-router-dom";
 export const AnalyticsCarousel = () => {
   const { analyticsPosts } = useAuth();
   const navigate = useNavigate();
+  const reversedAnalyticsPosts = [];
+  for (let i = analyticsPosts.length - 1; i >= 0; i--) {
+    reversedAnalyticsPosts.push(analyticsPosts[i]);
+  }
   return (
     <div className="w-full flex ">
       <div className="lg:flex hidden items-center justify-center w-full h-full py-24 px-4">
@@ -58,7 +62,7 @@ export const AnalyticsCarousel = () => {
                   id="slider"
                   className="h-full flex w-full gap-5 items-center justify-center transition ease-out duration-700 "
                 >
-                  {analyticsPosts.map((singlePost, index) => (
+                  {reversedAnalyticsPosts.map((singlePost, index) => (
                     <Slide index={index} key={singlePost._id}>
                       <div className="flex flex-shrink-0 relative w-full sm:w-auto h-72 rounded-3xl overflow-hidden">
                         <img
@@ -66,34 +70,16 @@ export const AnalyticsCarousel = () => {
                           alt="black chair and white table"
                           className="w-full h-full object-cover min-h-full"
                         />
-                        <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-                          <h2 className="lg:text-xl leading-4 text-base lg:leading-5 text-white">
+                        <div
+                          className="flex flex-col justify-end items-end bg-gray-800 bg-opacity-30 absolute w-full h-full p-6 cursor-pointer"
+                          onClick={() => {
+                            navigate(`/post/${singlePost._id}`);
+                            HelperService.scrollToTop();
+                          }}
+                        >
+                          <h2 className="lg:text-xl leading-4 text-base lg:leading-5 text-white bg-[#5f5e5e4a] p-4">
                             {singlePost.title}
                           </h2>
-                          <div className="flex h-full items-end pb-6">
-                            <div
-                              className="w-full flex flex-col bg-[#0f000036] cursor-pointer"
-                              onClick={() => {
-                                navigate(`/post/${singlePost._id}`);
-                                HelperService.scrollToTop();
-                              }}
-                            >
-                              <h3 className="text-xl font-semibold leading-5 lg:leading-6 text-white  ">
-                                {HelperService.truncateTitle(
-                                  singlePost.description,
-                                  25,
-                                )}
-                              </h3>
-                              <div className="w-full flex flex-row">
-                                <Link
-                                  to={`/post/${singlePost._id}`}
-                                  className="text-blue-500 hover:underline"
-                                >
-                                  Read more
-                                </Link>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </Slide>
@@ -168,7 +154,7 @@ export const AnalyticsCarousel = () => {
                   id="slider"
                   className="h-full flex w-full gap-4 lg:gap-10 items-center justify-center transition ease-out duration-700 "
                 >
-                  {analyticsPosts.map((singlePost, index) => (
+                  {reversedAnalyticsPosts.map((singlePost, index) => (
                     <Slide index={index} key={singlePost._id}>
                       <div className="flex flex-shrink-0 relative w-full sm:w-auto h-64 rounded-3xl overflow-hidden">
                         <img
@@ -176,26 +162,16 @@ export const AnalyticsCarousel = () => {
                           alt="black chair and white table"
                           className="object-cover object-center w-full h-full"
                         />
-                        <div className="bg-gray-800 bg-opacity-30 absolute w-full h-full p-6">
-                          <h2 className="lg:text-xl leading-4 text-base lg:leading-5 text-white">
+                        <div
+                          className="flex flex-col items-end justify-end bg-gray-800 bg-opacity-30 absolute w-full h-full p-6 cursor-pointer"
+                          onClick={() => {
+                            navigate(`/post/${singlePost._id}`);
+                            HelperService.scrollToTop();
+                          }}
+                        >
+                          <h2 className="lg:text-xl leading-4 text-lg font-semibold lg:leading-5 text-white bg-[#5f5e5e4a] p-4">
                             {singlePost.title}
                           </h2>
-                          <div className="flex h-full items-end">
-                            <div
-                              className="w-full flex flex-row bg-[#0f000036]cursor-pointer pb-8"
-                              onClick={() => {
-                                navigate(`/post/${singlePost._id}`);
-                                HelperService.scrollToTop();
-                              }}
-                            >
-                              <h3 className="text-sm font-normal leading-5 lg:leading-6 text-white cursor-pointer ">
-                                {HelperService.truncateTitle(
-                                  singlePost.description,
-                                  25,
-                                )}
-                              </h3>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </Slide>

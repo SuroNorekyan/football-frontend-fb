@@ -1,35 +1,55 @@
 import { useAuth } from "../Context/AuthContext";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Pagination } from "./Pagination";
 import { Link, useNavigate } from "react-router-dom";
 import APIService from "../APIService/APIService";
 import HelperService from "../AdditionalHelperMethods/HelperService";
 import { BiSolidTimeFive } from "react-icons/bi";
+import RichTextRenderer from "./RichTextRenderer";
 
 export const FeaturedNews = () => {
   const { featuredPosts } = useAuth();
   const postsPerPage = 4; // Number of posts per page
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const myDivRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToDiv = () => {
+    if (myDivRef.current) {
+      myDivRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+  const reversedFeaturedPosts = [];
+  for (let i = featuredPosts.length - 1; i >= 0; i--) {
+    reversedFeaturedPosts.push(featuredPosts[i]);
+  }
 
   // Calculate index range for the current page
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = featuredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = reversedFeaturedPosts.slice(
+    indexOfFirstPost,
+    indexOfLastPost,
+  );
 
   return (
-    <div className="flex w-full lg:flex-row flex-col flex-wrap justify-center">
+    <div
+      className="flex w-full lg:flex-row flex-col flex-wrap justify-center"
+      id="myDiv"
+      ref={myDivRef}
+    >
       {currentPosts?.map((singlePost, index) => (
-        <div className="lg:w-1/2 w-full flex my-2 px-2" key={index}>
-          <div className="flex flex-col w-full bg-white rounded-3xl shadow dark:bg-gray-800 ">
-            <div className="flex w-full lg:h-96 h-64">
-              <div
-                className="w-full  overflow-hidden rounded-t-3xl"
-                onClick={() => {
-                  navigate(`/post/${singlePost._id}`);
-                  HelperService.scrollToTop();
-                }}
-              >
+        <div
+          className="lg:w-1/2 w-full flex my-2 px-2 "
+          onClick={() => {
+            navigate(`/post/${singlePost._id}`);
+            HelperService.scrollToTop();
+          }}
+          key={index}
+        >
+          <div className="flex flex-col w-full bg-white rounded-3xl shadow dark:bg-gray-800  ">
+            <div className="flex w-full lg:h-96 h-64 cursor-pointer">
+              <div className="w-full  overflow-hidden rounded-t-3xl">
                 <img
                   src={singlePost.img}
                   alt={`img${index + 1}`}
@@ -40,7 +60,9 @@ export const FeaturedNews = () => {
             <div className="p-5 rounded-3xl">
               <div className="flex flex-row items-center mb-3 font-normal text-gray-700 dark:text-gray-400">
                 <BiSolidTimeFive className="text-xl text-white" />
-                <p className="px-1">{singlePost.date}</p>
+                <p className="px-1">
+                  {HelperService.formatDate(singlePost.date)}
+                </p>
               </div>
               <a href="#">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -48,7 +70,12 @@ export const FeaturedNews = () => {
                 </h5>
               </a>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                {HelperService.truncateTitle(singlePost.description, 35)}
+                {
+                  <RichTextRenderer
+                    htmlContent={singlePost.description}
+                    maxLength={450}
+                  />
+                }
               </p>
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                 {singlePost.author}
@@ -59,7 +86,7 @@ export const FeaturedNews = () => {
                   className="text-white hover:underline"
                   onClick={HelperService.scrollToTop}
                 >
-                  Read more
+                  Ավելին
                 </Link>
               </div>
             </div>
@@ -67,11 +94,11 @@ export const FeaturedNews = () => {
         </div>
       ))}
 
-      <div className="flex w-full justify-center">
+      <div className="flex w-full justify-center" onClick={scrollToDiv}>
         <Pagination
           currentPage={currentPage}
           postsPerPage={postsPerPage}
-          totalPosts={featuredPosts.length}
+          totalPosts={reversedFeaturedPosts.length}
           onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
         />
       </div>

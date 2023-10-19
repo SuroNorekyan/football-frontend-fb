@@ -1,6 +1,6 @@
 import { Post } from "../models/models";
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Menu } from "../Components/Menu";
 import Footer from "../Components/Footer";
 import { BiSolidTimeFive } from "react-icons/bi";
@@ -14,6 +14,7 @@ interface PostByDateProps {
 export const PostByDate: React.FC<PostByDateProps> = ({ posts }) => {
   const { postDate } = useParams<{ postDate: string }>();
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   console.log("Post Date from URL:", postDate);
 
@@ -57,6 +58,10 @@ export const PostByDate: React.FC<PostByDateProps> = ({ posts }) => {
               key={singlePost._id}
               className="w-full lg:w-1/4 flex flex-col border-[.5px] border-gray-300 rounded-xl mx-2 my-4 p-2
               duration-100 hover:scale-105 hover:shadow-2xl"
+              onClick={() => {
+                navigate(`/post/${singlePost._id}`);
+                HelperService.scrollToTop();
+              }}
             >
               <div className="w-full flex rounded-xl overflow-hidden lg:h-56 h-64 ">
                 <img
@@ -68,7 +73,9 @@ export const PostByDate: React.FC<PostByDateProps> = ({ posts }) => {
               <div className="w-full flex flex-col">
                 <div className="w-full flex flex-row items-center justify-start">
                   <BiSolidTimeFive className="text-md text-[#1E293B]" />
-                  <p className="px-1">{singlePost.date}</p>
+                  <p className="px-1">
+                    {HelperService.formatDate(singlePost.date)}
+                  </p>
                 </div>
                 <div className="w-full flex flex-row font-semibold">
                   {singlePost.title}

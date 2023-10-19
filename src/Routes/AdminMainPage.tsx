@@ -1,5 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { QuillField } from "../Components/QuillField";
 
 export const AdminMainPage = () => {
   const [deleteUrl, setDeleteUrl] = useState("");
@@ -22,6 +23,8 @@ export const AdminMainPage = () => {
           description: values.description,
           author: values.author,
           img: values.image,
+          img2: values.image2,
+          img3: values.image3,
           videoUrl: values.videoUrl,
           carousel: values.carousel,
           sideFeed: values.sideFeed,
@@ -33,6 +36,7 @@ export const AdminMainPage = () => {
 
       if (response.ok) {
         alert("Post sent successfully!");
+        console.log(await response.json());
       } else {
         // Handle the case of an error
         console.error("Error adding post");
@@ -74,6 +78,8 @@ export const AdminMainPage = () => {
                 description: "",
                 author: "",
                 image: "",
+                image2: "",
+                image3: "",
                 videoUrl: "",
                 carousel: false,
                 sideFeed: false,
@@ -108,10 +114,8 @@ export const AdminMainPage = () => {
                     Description
                   </label>
                   <Field
-                    type="text"
-                    id="description"
                     name="description"
-                    className="mt-1 p-2 border rounded w-full"
+                    render={(fieldProps: any) => <QuillField {...fieldProps} />}
                   />
                   <ErrorMessage
                     name="description"
@@ -119,6 +123,7 @@ export const AdminMainPage = () => {
                     className="text-red-500 text-xs mt-1"
                   />
                 </div>
+
                 <div className="mb-4">
                   <label htmlFor="author" className="block text-sm font-medium">
                     Author
@@ -152,11 +157,45 @@ export const AdminMainPage = () => {
                   />
                 </div>
                 <div className="mb-4">
+                  <label htmlFor="image2" className="block text-sm font-medium">
+                    Image URL 2
+                  </label>
+                  <Field
+                    type="text"
+                    id="image2"
+                    name="image2"
+                    className="mt-1 p-2 border rounded w-full"
+                  />
+                  <ErrorMessage
+                    name="image2"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="image3" className="block text-sm font-medium">
+                    Image URL 3
+                  </label>
+                  <Field
+                    type="text"
+                    id="image3"
+                    name="image3"
+                    className="mt-1 p-2 border rounded w-full"
+                  />
+                  <ErrorMessage
+                    name="image3"
+                    component="div"
+                    className="text-red-500 text-xs mt-1"
+                  />
+                </div>
+
+                <div className="mb-4">
                   <label
                     htmlFor="videoUrl"
                     className="block text-sm font-medium"
                   >
-                    Video URL
+                    Video URL (Optional)
                   </label>
                   <Field
                     type="text"

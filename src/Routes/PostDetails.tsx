@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Post } from "../models/models";
 import { SideFeed } from "../Components/SideFeed";
@@ -9,7 +9,7 @@ import HelperService from "../AdditionalHelperMethods/HelperService";
 import { BiSolidTimeFive } from "react-icons/bi";
 import { BsArrowUpRightCircle } from "react-icons/bs";
 import { Feed } from "../Components/Feed";
-
+import RichTextRenderer from "../Components/RichTextRenderer";
 interface PostDetailsProps {
   posts: Post[];
 }
@@ -17,15 +17,30 @@ interface PostDetailsProps {
 const PostDetails: React.FC<PostDetailsProps> = ({ posts }) => {
   const { postId } = useParams<{ postId: string }>();
   const post = posts.find((p) => p._id === postId);
-  let regularUrl: string | undefined;
+  const parse = require("html-react-parser");
+  const regularUrl: string | undefined =
+    HelperService.convertRegularUrlToEmbedUrl(post?.videoUrl);
+  const formattedDate = post ? HelperService.formatDate(post.date) : "";
 
-  if (!post) {
-    console.log(postId);
-    return <div>Post not found</div>;
-  }
-  if (post.videoUrl) {
-    regularUrl = HelperService.convertToEmbedUrl(post.videoUrl);
-  }
+  // Ensure that post is defined before attempting to set Open Graph tags
+  useEffect(() => {
+    if (post) {
+      // Dynamically set the document title
+      document.title = post.title;
+
+      // Dynamically update Open Graph meta tags based on the post data
+      const metaTags = document.head.querySelectorAll("meta");
+
+      metaTags.forEach((tag) => {
+        if (tag.getAttribute("property") === "og:title") {
+          tag.setAttribute("content", post.title);
+        }
+        if (tag.getAttribute("property") === "og:image") {
+          tag.setAttribute("content", post.img);
+        }
+      });
+    }
+  }, [post]);
 
   return (
     <>
@@ -35,21 +50,34 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts }) => {
           <div className="flex flex-col lg:w-3/5 w-full px-2 rounded-xl ">
             <div className="w-full flex flex-row justify-start items-center px-4 text-xl mt-4">
               <BiSolidTimeFive className="text-2xl text-[#1E293B]" />
-              <p className="px-2">{post.date}</p>
+              <p className="px-2">{formattedDate}</p>
             </div>
             <div className="w-full flex px-4 text-2xl font-bold my-4">
-              {post.title}
+              {post?.title}
             </div>
             <div className="flex lg:w-full w-full px-2 lg:my-4 overflow-hidden ">
               <div className="rounded-xl overflow-hidden">
-                <img src={post.img} alt={post.title} />
+                <img src={post?.img} alt={post?.title} />
               </div>
             </div>
-            <div className="flex lg:w-full w-full px-2 my-8 overflow-hidden ">
-              {post.description}
+            <div
+              className="flex lg:w-full w-full px-2 my-8 overflow-hidden "
+              style={{ whiteSpace: "pre-line" }}
+            >
+              {post?.description ? (
+                <RichTextRenderer htmlContent={post?.description} />
+              ) : null}
             </div>
-            <div className="flex lg:w-full w-full px-2 my-8 overflow-hidden h-96">
-              {post.videoUrl ? (
+            {post?.img2 ? (
+              <div className="flex lg:w-full w-full px-2 lg:my-4 overflow-hidden ">
+                <div className="rounded-xl overflow-hidden">
+                  <img src={post?.img2} alt={post?.title} />
+                </div>
+              </div>
+            ) : null}
+
+            {post?.videoUrl ? (
+              <div className="flex lg:w-full w-full px-2 my-8 overflow-hidden h-96">
                 <iframe
                   width="100%"
                   height="100%"
@@ -59,12 +87,8 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts }) => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 ></iframe>
-              ) : (
-                <p className="text-gray-500 mt-4">
-                  No video content is available for this post.
-                </p>
-              )}
-            </div>
+              </div>
+            ) : null}
           </div>
           <div className="hidden lg:w-2/5 w-full px-2 lg:my-0 lg:flex flex-col">
             <SideFeed postsPerPage={10} />
@@ -79,7 +103,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ posts }) => {
 
           <div className="w-full flex ">
             {" "}
-            <div className="flex lg:w-full w-full px-2 lg:my-4 justify-start ">
+            <div className="flex lg:hidden w-full px-2 lg:my-4 justify-start ">
               <Feed />
             </div>
           </div>

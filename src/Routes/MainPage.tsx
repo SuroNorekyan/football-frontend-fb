@@ -3,16 +3,50 @@ import { Carousel } from "../Components/Carousel";
 import { Feed } from "../Components/Feed";
 import { SideFeed } from "../Components/SideFeed";
 import { FeaturedNews } from "../Components/FeaturedNews";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 import Footer from "../Components/Footer";
 import { Analytics } from "../Components/Analytics";
 import HelperService from "../AdditionalHelperMethods/HelperService";
 import { Link, useNavigate } from "react-router-dom";
 import { BsArrowUpRightCircle } from "react-icons/bs";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCrsBk70YYMDTILrjaEhsamxB8wZ1zPi-M",
+  authDomain: "sdfootballnews.firebaseapp.com",
+  projectId: "sdfootballnews",
+  storageBucket: "sdfootballnews.appspot.com",
+  messagingSenderId: "134577226738",
+  appId: "1:134577226738:web:f9b18b14394e51563b216b",
+  measurementId: "G-8J9FZ5E376",
+};
+declare global {
+  interface Window {
+    yaContextCb: any[];
+  }
+  const Ya: any;
+}
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 export const MainPage = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    // Log a custom event to track visited users
+    logEvent(analytics, "visited_user");
+
+    // You can also log additional events or user properties as needed
+    // logEvent(analytics, "custom_event_name", { custom_param: "custom_value" });
+  }, []);
+
   return (
     <>
       <Menu />
